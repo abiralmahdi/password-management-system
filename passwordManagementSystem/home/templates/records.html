@@ -1,0 +1,113 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<!-- <div class="container mt-4">
+    <input type="text" placeholder="Enter the service you have an account with. " class="w-50 mb-4 form-control">
+</div> -->
+
+
+<div class="table-responsive mt-5 pt-5" style="max-height:400px">
+    <table class="container table table-stripe mt-3">
+        <thead>
+          <tr>
+            <th >#</th>
+            <th >Service</th>
+            <th >Email/Username</th>
+            <th >Password</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for service in services %}
+            <tr>
+              <th>{{forloop.counter}}</th>
+              <td>{{service.service}}</td>
+              <td>{{service.email}}</td>
+              <td><input type="password" id="pass{{forloop.counter}}" value="{{service.password}}" readonly><button class="mb-1 btn btn-outline-light text-dark btn-sm" id="{{forloop.counter}}" onclick="viewPass(this.id)">View</button> </td>
+              <td ><button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">Edit</button></td>
+              <td ><a class="btn btn-danger" href="/deleteService/{{service.id}}">Delete</a></td>
+            </tr>
+
+            <!-- modal -->
+            <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel{{forloop.counter}}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/editService/{{request.user.username}}/{{service.id}}" method="post">{% csrf_token %}
+                      <div class="mb-3">
+                        <input type="text" class="form-control" id="serviceName{{forloop.counter}}" name="serviceName{{service.id}}" value="{{service.service}}">
+                      </div>
+                      <div class="mb-3">
+                        <input type="text" class="form-control" id="username{{forloop.counter}}" name="username{{service.id}}" value="{{service.email}}">
+                      </div>
+                      <div class="mb-3">
+                        <input type="password" class="form-control" id="password{{forloop.counter}}" name="password{{service.id}}" value="{{service.password}}">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+
+
+        </tbody>        
+      </table>
+    </div>
+    <p class="text-center mt-5"><button class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal">Add More</button></p>
+    <!-- modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Service </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/addService" method="post">{% csrf_token %}
+              <div class="mb-3">
+                <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="Service">
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-primary">Add Service</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script>
+      function viewPass(id){
+        let pass = document.getElementById("pass"+id)
+        if (pass.type == 'password'){
+          pass.type = 'text'
+        }
+        else{
+          pass.type = 'password'
+        }
+      }
+    </script>
+
+
+{% endblock %}
+

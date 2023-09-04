@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<main class="form-signin w-100 m-auto">
+    <form  class="mt-5 shadow p-3" action="/login" method="post">
+      {% csrf_token %}
+      <h1 class="h3 mb-3 text-center fw-normal">Please log in</h1>
+  
+      <div class="form-floating">
+        <input type="email" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating mt-3">
+        <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+  
+
+      <button class="w-100 mb-5 btn btn-lg btn-dark" type="submit">Sign in</button>
+      <a class="mt-5 pt-5 text-dark">Forgot Password?</a><br/>
+      <a class="mt-5 pt-5 text-dark" href="/register">Create an Account.</a>
+    </form>
+  </main>
+
+  {% endblock %}
